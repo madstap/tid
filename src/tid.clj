@@ -25,9 +25,13 @@
   (when (fs/exists? (entries-file))
     (vec (ednl/slurp (entries-file)))))
 
+(defn write-entry [entry]
+  (io/make-parents (entries-file))
+  (ednl/spit (entries-file) [entry] {:append? true}))
+
 (comment
 
-  (write-config {:puter :dell-laptop})
+  (write-config {:pc :dell-laptop})
 
   (read-config)
 
@@ -35,12 +39,12 @@
 
   (fs/delete-if-exists (entries-file))
 
-  (read-entries)
+  (mapv :task (distinct (read-entries)))
 
   {:action :clock/in
    :task "ABC-2135 Some task"
    :project :proj
-   :puter :dell-laptop
+   :pc :dell-laptop
    :time #inst "2025"}
 
   {:action :clock/out}
@@ -50,18 +54,16 @@
 
   )
 
-(defn write-entry [entry]
-  (io/make-parents (entries-file))
-  (ednl/spit (entries-file) [entry] {:append? true}))
+(defn now [] (java.util.Date.))
 
 (defn tz [opts]
   )
 
 (defn clock [{:keys [action task project]}]
-  (let [{:keys [puter]} (read-config)
+  (let [{:keys [pc]} (read-config)
         entry (-> {:action (keyword "clock" action)
-                   :puter puter
-                   :ts (java.util.Date.)}
+                   :pc pc
+                   :ts (now)}
                   (medley/assoc-some :task task :project (keyword project)))]
     (write-entry entry)
     (println "Wrote entry:")
