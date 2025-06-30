@@ -1,6 +1,4 @@
 {:paths ["src"]
+ :deps {tid/tid {:local/root "."}}
  :tasks {}
- :deps {lambdaisland/edn-lines {:mvn/version "1.0.10"}
-        com.lambdaisland/cli {:mvn/version "0.23.93"}
-        dev.weavejester/medley {:mvn/version "1.8.1"}}
  :bbin/bin {tid {:main-opts ["-m" "tid"]}}}
