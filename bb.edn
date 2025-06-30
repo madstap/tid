@@ -1,4 +1,4 @@
 {:paths ["src"]
  :deps {tid/tid {:local/root "."}}
  :tasks {}
- :bbin/bin {tid {:main-opts ["-m" "tid"]}}}
+ :bbin/bin {tid {:main-opts ["-f" "src/tid.clj"]}}}
